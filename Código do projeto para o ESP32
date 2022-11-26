@@ -1,0 +1,64 @@
+#include <HCSR04.h>                       
+#define buzzer 14  
+const byte triggerPin = 13;
+const byte echoPin = 12;
+UltraSonicDistanceSensor distanceSensor(triggerPin, echoPin);
+int tempo;            
+             
+                                      
+void setup()                                                 
+{                                                             
+  pinMode(buzzer,OUTPUT);                                    
+  Serial.begin(9600);                                         
+}                                                             
+
+ 
+void loop()                                                  
+{                                                           
+  float distance = distanceSensor.measureDistanceCm();
+
+  if (distance > 200 || distance < 2) { desligado(); }
+  else { principal(); }
+ 
+
+  if (distance >= 190 && distance <= 200) {tempo = 500;}
+  else if (distance >= 180 && distance <= 190) {tempo = 475;}
+  else if (distance >= 170 && distance <= 180) {tempo = 450;}
+  else if (distance >= 160 && distance <= 170) {tempo = 425;}
+  else if (distance >= 150 && distance <= 160) {tempo = 400;}
+  else if (distance >= 140 && distance <= 150) {tempo = 375;}
+  else if (distance >= 130 && distance <= 140) {tempo = 350;}
+  else if (distance >= 120 && distance <= 130) {tempo = 325;}
+  else if (distance >= 110 && distance <= 120) {tempo = 300;}
+  else if (distance >= 100 && distance <= 110) {tempo = 275;}
+  else if (distance >= 90 && distance <= 100) {tempo = 250;}
+  else if (distance >= 80 && distance <= 90) {tempo = 225;}
+  else if (distance >= 70 && distance <= 80) {tempo = 200;}
+  else if (distance >= 60 && distance <= 70) {tempo = 175;}
+  else if (distance >= 50 && distance <= 60) {tempo = 150;}
+  else if (distance >= 40 && distance <= 50) {tempo = 125;}
+  else if (distance >= 30 && distance <= 40) {tempo = 100;}
+  else if (distance >= 20 && distance <= 30) {tempo = 75;}
+  else if (distance >= 10 && distance <= 20) {tempo = 50;}
+  else if (distance < 10) {tempo = 25;}
+  else {tempo = 50;}
+
+  Serial.print("DistanciaCm: ");                                
+  Serial.print(distance);                                  
+  Serial.print("cm ");  
+  delay (10);                                      
+                                              
+}      
+
+
+void principal()  {
+  digitalWrite (buzzer, LOW);
+  delay (tempo);
+  digitalWrite (buzzer, HIGH);
+  delay (tempo);
+}
+
+void desligado() {
+  digitalWrite (buzzer, LOW);  
+  delay (tempo);
+  }
